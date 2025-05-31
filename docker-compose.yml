@@ -1,0 +1,29 @@
+services:
+  ros1:
+    image: ros:noetic
+    container_name: ros1_container
+    networks:
+      - ros_network
+    tty: true
+
+  ros2:
+    image: ros:humble
+    container_name: ros2_container
+    networks:
+      - ros_network
+    tty: true
+
+  bridge:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.bridge
+    container_name: bridge_container
+    depends_on:
+      - ros1
+      - ros2
+    networks:
+      - ros_network
+    tty: true
+
+networks:
+  ros_network:

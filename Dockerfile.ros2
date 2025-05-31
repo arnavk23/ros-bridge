@@ -1,0 +1,11 @@
+FROM ros:humble
+
+RUN apt update && apt install -y \
+    ros-humble-ros1-bridge \
+    python3-colcon-common-extensions \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV ROS_DISTRO=humble
+SHELL ["/bin/bash", "-c"]
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
