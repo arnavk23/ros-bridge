@@ -1,0 +1,33 @@
+version: "3.9"
+services:
+  ros1:
+    build:
+      context: ./ros1
+    container_name: ros1_container
+    networks:
+      - ros_net
+    tty: true
+
+  ros2:
+    build:
+      context: ./ros2
+    container_name: ros2_container
+    networks:
+      - ros_net
+    tty: true
+
+  bridge:
+    build:
+      context: ./bridge
+    container_name: ros_bridge_container
+    networks:
+      - ros_net
+    depends_on:
+      - ros1
+      - ros2
+    tty: true
+
+networks:
+  ros_net:
+    driver: bridge
+
