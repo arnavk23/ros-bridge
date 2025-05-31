@@ -1,77 +1,25 @@
-# ros-bridge
-Bridging ros humble with ros noetic using dockerfile on Ubuntu 24.04
+# visualization_msgs
 
-## ROS Humble ↔ ROS Noetic Bridge (Ubuntu 24.04)
+This package provides messages for visualizing 3D information in ROS GUI programs, particularly RViz.
 
-This repository provides a Docker-based setup to bridge **ROS 2 Humble** with **ROS 1 Noetic** on **Ubuntu 24.04**, enabling message and service communication across both ecosystems using `ros1_bridge`.
+These messages were ported from ROS 1 and for now the [visualization_msgs wiki](http://wiki.ros.org/visualization_msgs) is still a good place for information about these messages and how they are used.
 
-### Features
+For more information about ROS 2 interfaces, see [docs.ros.org](https://docs.ros.org/en/rolling/Concepts/About-ROS-Interfaces.html).
 
-- Dockerfile-based reproducible setup
-- Bridges topics and services between ROS Noetic (ROS 1) and ROS Humble (ROS 2)
-- Supports running on Ubuntu 24.04
-- Minimal dependencies and isolated environment
+## Messages (.msg)
+* [ImageMarker](msg/ImageMarker.msg): A marker to overlay on displayed images.
+* [InteractiveMarker](msg/InteractiveMarker.msg): A user interaction marker for manipulating objects in 3-dimensional space in GUI programs, like RViz.
+* [InteractiveMarkerControl](msg/InteractiveMarkerControl.msg): Represents a control that is to be displayed together with an interactive marker.
+* [InteractiveMarkerFeedback](msg/InteractiveMarkerFeedback.msg): Feedback message sent back from the GUI, e.g. when the status of an interactive marker was modified by the user.
+* [InteractiveMarkerInit](msg/InteractiveMarkerInit.msg): Used for sending initial interactive marker descriptions.
+* [InteractiveMarkerPose](msg/InteractiveMarkerPose.msg): The pose of the interactive marker.
+* [InteractiveMarkerUpdate](msg/InteractiveMarkerUpdate.msg): The top-level message for sending data from the interactive marker server to the client (i.e. rviz).
+* [Marker](msg/Marker.msg): A non-interactive marker for displaying annotations in 3-dimensional space.
+* [MarkerArray](msg/MarkerArray.msg): An array of markers.
+* [MenuEntry](msg/MenuEntry.msg): Used to describe the menu/submenu/subsubmenu/etc tree.
 
-### Prerequisites
+## Services (.srv)
+* [GetInteractiveMarkers.srv](srv/GetInteractiveMarkers.srv): Get the currently available interactive markers.
 
-- Docker (v20.10+)
-- Docker Compose (optional, for easier multi-container setup)
-- Ubuntu 24.04 host (or compatible)
-
-## Getting Started
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/arnavk23/ros-bridge.git
-cd ros-bridge
-````
-
-### 2. Build the Docker Image
-
-```bash
-docker build -t ros-bridge .
-```
-
-### 3. Run the Container
-
-```bash
-docker run -it --rm \
-    --net=host \
-    --env="DISPLAY" \
-    ros-bridge
-```
-
-> The `--net=host` flag ensures ROS 1/2 networking works correctly across environments.
-
-### 4. Using the Bridge
-
-Inside the container:
-
-```bash
-source /opt/ros/humble/setup.bash
-source /opt/ros/noetic/setup.bash
-source /ros_ws/install/setup.bash
-
-ros2 run ros1_bridge dynamic_bridge
-```
-
-This will automatically detect and bridge common messages/services between the two ROS versions.
-
-### Customization
-
-* Add additional ROS packages to `ros_ws/src/` and rebuild using `colcon build`.
-* Modify the `Dockerfile` if you need GPU support, custom dependencies, or additional tools.
-
-### Testing
-
-1. Launch a ROS 1 publisher (e.g., `rostopic pub`)
-2. Launch a ROS 2 subscriber (e.g., `ros2 topic echo`)
-3. Verify messages flow between the systems via the bridge.
-
-### Notes
-
-* Ubuntu 24.04 support for ROS Noetic and Humble may involve workarounds, since Noetic is officially supported up to Ubuntu 20.04.
-* For fully working bridges, message types must be **identical** in both ROS 1 and ROS 2.
-
-You can copy this into a file named `README.md` in the root of your repository. Let me know if you want this adapted for `docker-compose`, or want to generate a working `Dockerfile` to match!
+## Quality Declaration
+This package claims to be in the **Quality Level 2** category, see the [Quality Declaration](QUALITY_DECLARATION.md) for more details.
