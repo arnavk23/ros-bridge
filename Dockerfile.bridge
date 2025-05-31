@@ -1,0 +1,48 @@
+FROM ubuntu:20.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Add ROS1 and ROS2 sources
+RUN apt update && apt install -y curl gnupg2 lsb-release
+
+# ROS1 Noetic source and key
+RUN echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros1.list && \
+    curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | apt-key add -
+
+# ROS2 Humble source and key (backported onto 20.04 – risky, for advanced users only)
+RUN echo "deb http://packages.ros.org/ros2/ubuntu focal main" > /etc/apt/sources.list.d/ros2.list && \
+    curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.key | apt-key add -
+
+RUN apt update && apt install -y \
+    ros-noetic-desktop-full \
+    python3-colcon-common-extensions \
+    python3-vcstool \
+    build-essential \
+    cmake \
+    git \
+    python3-pip
+
+# Install ROS2 via pip (Hacky workaround)
+RUN pip3 install rosdep
+
+# Source environments
+SHELL ["/bin/bash", "-c"]
+
+RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
+
+# Setup workspace
+RUN mkdir -p /ros2_bridge_ws/src
+WORKDIR /ros2_bridge_ws
+
+# Clone ros1_bridge repo
+RUN git clone https://github.com/ros2/ros1_bridge.git src/ros1_bridge
+
+# Init rosdep
+RUN rosdep init && rosdep update
+
+# Install dependencies (may require tweaking)
+RUN source /opt/ros/noetic/setup.bash && \
+    rosdep install --from-paths src --ignore-src -r -y
+
+# Build (you will still need ROS2 overlays mounted or sourced here)
+CMD ["bash"]
