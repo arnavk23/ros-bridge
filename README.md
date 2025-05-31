@@ -20,8 +20,8 @@ This repository provides a Docker-based setup to bridge **ROS 2 Humble** with **
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/ros-bridge-humble-noetic.git
-cd ros-bridge-humble-noetic
+git clone https://github.com/arnavk23/ros-bridge.git
+cd ros-bridge
 ````
 
 ### 2. Build the Docker Image
@@ -70,7 +70,4 @@ This will automatically detect and bridge common messages/services between the t
 
 * Ubuntu 24.04 support for ROS Noetic and Humble may involve workarounds, since Noetic is officially supported up to Ubuntu 20.04.
 * For fully working bridges, message types must be **identical** in both ROS 1 and ROS 2.
-
-```
-You can copy this into a file named `README.md` in the root of your repository. Let me know if you want this adapted for `docker-compose`, or want to generate a working `Dockerfile` to match!
-```
+---
