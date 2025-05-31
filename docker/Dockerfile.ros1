@@ -1,0 +1,12 @@
+FROM ros:noetic
+
+RUN apt update && apt install -y \
+    ros-noetic-roscpp \
+    ros-noetic-std-msgs \
+    python3-colcon-common-extensions \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV ROS_DISTRO=noetic
+SHELL ["/bin/bash", "-c"]
+RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc

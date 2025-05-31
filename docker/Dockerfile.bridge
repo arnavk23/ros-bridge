@@ -1,0 +1,14 @@
+FROM ros:humble
+
+# Install ROS1 dependencies inside the ROS2 (humble) container
+RUN apt update && apt install -y \
+    ros-humble-ros1-bridge \
+    ros-noetic-roscpp \
+    ros-noetic-std-msgs \
+    python3-colcon-common-extensions \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV ROS_DISTRO=humble
+SHELL ["/bin/bash", "-c"]
+RUN echo "source /opt/ros/noetic/setup.bash && source /opt/ros/humble/setup.bash" >> ~/.bashrc
